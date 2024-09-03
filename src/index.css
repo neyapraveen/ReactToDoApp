@@ -24,10 +24,10 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  /* Remove flex layout to avoid conflicting with your app layout */
+  /* Remove min-width if you want the app to handle its own layout */
   min-height: 100vh;
+  background-color: #242424; /* Ensure background color matches your design */
 }
 
 h1 {

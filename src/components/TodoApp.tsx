@@ -1,71 +1,88 @@
-
-import { useState } from 'react';
-
-//defines structure of a todo item, including its properties
-interface TodoItem {
-    id: string;
-    text: string;
-    completed: boolean;
-    }
+import { useState, useEffect } from 'react';
+import Header from './Header';
+import Footer from './Footer';
+import '../App.css';
+import { TodoItem } from '../models/TodoItem';
+import { loadTodosFromLocalStorage } from '../utils/localStorageUtils';
 
 const TodoApp = () => {
-    const [todos, setTodos] = useState<TodoItem[]>([]);
-    const [newTodo, setNewTodo] = useState('');
+  const [todos, setTodos] = useState<TodoItem[]>(loadTodosFromLocalStorage());
+  const [newTodo, setNewTodo] = useState('');
 
-    const addTodo = () => {
-    if (newTodo !== '') {
-        const newId = crypto.randomUUID();
-        const newTodoItem: TodoItem = {
+// Update local storage whenever TODOs change
+  useEffect(() => {
+    try {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    } catch (error) {
+      console.error('Error saving todos to local storage:', error);
+    }
+  }, [todos]);
+
+  const addTodo = () => {
+    if (newTodo.trim() !== '') {
+      const newId = crypto.randomUUID();
+      const newTodoItem: TodoItem = {
         id: newId,
-        text: newTodo,
+        text: newTodo.trim(),
         completed: false,
-        };
-        setTodos([...todos, newTodoItem]);
-        setNewTodo('');
-        }
-    };
+      };
+      setTodos((prevTodos) => [...prevTodos, newTodoItem]);
+      setNewTodo('');
+    }
+  };
 
-    const removeTodo = (id: string) => {
-        const updatedTodos = todos.filter((todo) => todo.id !== id);
-        setTodos(updatedTodos);
-    };
+  const removeTodo = (id: string) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  };
 
-    const toggleComplete = (id: string) => {
-        const updatedTodos = todos.map((todo) => {
-            if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
-            }
-            return todo;
-        });
-        setTodos(updatedTodos);
-    };
-
-    return (
-        <div>
-            <h1>Todo App</h1>
-            <input
-                type="text"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-        />
-        <button onClick={addTodo}>Add Todo</button>
-        <ul>
-        {todos.map((todo) => (
-            <li key={todo.id}>
-                <input
-                    type="checkbox"
-                    checked={todo.completed}
-                    onChange={() => toggleComplete(todo.id)}
-                />
-                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                    {todo.text}
-                </span>
-                <button onClick={() => removeTodo(todo.id)}>Remove</button>
-            </li>
-        ))}
-        </ul>
-     </div>
+  const toggleComplete = (id: string) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
+    setTodos(updatedTodos);
+  };
+
+  // Calculate the number of incomplete todos
+  const incompleteCount = todos.filter(todo => !todo.completed).length;
+
+  return (
+    <div className="app-container">
+      <Header />
+      <main>
+        <div className="input-wrapper">
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            placeholder="Enter a new task"
+            id="todo-input"  // Unique id attribute added for accessibility
+          />
+          <button onClick={addTodo} className="add-task-btn">
+            <i className="fas fa-plus"></i>
+          </button>
+        </div>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleComplete(todo.id)}
+              />
+              <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                {todo.text}
+              </span>
+              <button onClick={() => removeTodo(todo.id)}>
+                <i className="fas fa-trash-alt"></i>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </main>
+      <Footer incompleteCount={incompleteCount} />
+    </div>
+  );
 };
 
 export default TodoApp;

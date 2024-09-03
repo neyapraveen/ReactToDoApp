@@ -1,42 +1,116 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   text-align: center;
+  align-items: center; /* Center content horizontally */
+  width: 100%;
+  max-width: 100%; /* Ensure the container can extend to the full width of the viewport */
+  margin: 0 auto; /* Center horizontally */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+header, footer {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%; /* Ensure header and footer extend the full width */
+  max-width: 1280px; /* Optional: to limit the max width */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+header {
+  margin-bottom: 1.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
+footer {
   color: #888;
+  margin-top: auto; /* Push the footer to the bottom */
+  font-size: 0.9rem;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  width: 100%;
+  max-width: 1280px; /* Optional: to limit the max width */
+  padding: 1rem;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+input {
+  margin-right: 0.5rem; /* Space between input and button */
+}
+
+input, button {
+  margin: 0.5rem;
+}
+
+/* Dustbin Icon Styling */
+button i.fas.fa-trash-alt {
+  color: red; /* Set the icon color to red */
+  cursor: pointer; /* Change the cursor to pointer on hover */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+  font-size: 1.2rem; /* Adjust the size of the icon (smaller button) */
+}
+
+button i.fas.fa-trash-alt:hover {
+  color: #8B0000; /* Darker red on hover */
+}
+
+li {
+  display: flex;
+  align-items: center; /* Keep items (checkbox, text, button) aligned on the same line */
+  justify-content: space-between; /* Add spacing between task text and trash icon */
+}
+
+li span {
+  flex-grow: 1; /* Allow task text to take up available space */
+  margin-right: 10px; /* Add some space between the text and the button */
+}
+
+button {
+  background: none; /* Remove default button background */
+  border: none; /* Remove default button border */
+  padding: 0; /* Remove default button padding */
+  margin-left: 5px; /* Add a small margin to the left for spacing */
+  font-size: 1.2rem; /* Adjust button size for smaller icon */
+}
+
+.add-task-btn {
+  background-color: #28a745; /* Green background */
+  border: none;
+  padding: 0.75rem; /* Increase padding to make the circle bigger */
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.5rem; /* Increase icon size */
+  transition: background-color 0.3s;
+}
+
+.add-task-btn:hover {
+  background-color: #1e7e34; /* Darker green on hover */
+}
+
+.add-task-btn i {
+  margin: 0;
 }
